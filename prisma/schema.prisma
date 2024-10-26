@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb" // Using MongoDB
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  DOCTOR
+}
+
+model User {
+  id                   String                  @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String?
+  email                String                  @unique
+  hashedPassword       String?
+  role                 Role                    @default(USER)
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+  accounts             Account[]               // Relation to NextAuth Accounts
+  sessions             Session[]               // Relation to NextAuth Sessions
+  verificationTokens    VerificationToken[]    // Relation for password reset tokens
+  passwordReset        passwordReset[]         // Relation for password reset tokens
+  doctors              Doctor[]                @relation("UserDoctors") // Relation to doctors associated with this user
+
+}
+
+model Subscription {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  email                String   @unique
+  createdAt            DateTime @default(now())
+}
+
+model Account {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId               String   @db.ObjectId
+  type                 String
+  provider             String
+  providerAccountId    String
+  refresh_token        String?
+  access_token         String?
+  expires_at           Int?
+  token_type           String?
+  scope                String?
+  id_token             String?
+  session_state        String?
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken         String   @unique
+  userId               String   @db.ObjectId
+  expires              DateTime
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier           String
+  token                String
+  expires              DateTime
+  userId               String   @db.ObjectId
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([identifier, token])
+}
+
+model passwordReset {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId               String   @db.ObjectId
+  token                String   @unique
+  createdAt            DateTime @default(now())
+  expires              DateTime
+
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Doctor {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String   @unique
+  specialty   String
+  experience  String
+  fees        String
+  education   String
+  address1    String
+  address2    String?
+  aboutMe     String? 
+  image       String?
+  createdAt   DateTime @default(now())
+  userId      String   @db.ObjectId // Foreign key to the User model
+  user        User     @relation("UserDoctors", fields: [userId], references: [id], onDelete: Cascade) // Relation to User
+}
+
+
+
+model Patient {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String   @unique
+  phone      String?  // Make phone optional
+  birthDate  DateTime
+  gender     String
+  address    String
+  aboutMe    String
+  image      String   // URL of the image
+}
+model Appts {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  patientName String
+  doctorEmail String   // Ensure this is non-nullable
+  date        DateTime
+  time        String
+  fee         Float
+}
