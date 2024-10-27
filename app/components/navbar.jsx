@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,11 +6,11 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
-import { FiUser, FiCalendar, FiLogOut } from 'react-icons/fi'; // Importing icons for dropdown
+import { FiUser, FiCalendar, FiLogOut } from 'react-icons/fi';
 
-const Navbar: React.FC = () => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
     setDropdownOpen(prev => !prev);
   };
 
-  const handleMenuClick = (path: string) => {
+  const handleMenuClick = (path) => {
     router.push(path);
     setMenuOpen(false); // Close navbar on mobile after link click
   };
