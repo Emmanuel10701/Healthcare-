@@ -7,12 +7,12 @@ import Button from '@mui/material/Button';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const ForgotPasswordPage: React.FC = () => {
+const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [gmailEnabled, setGmailEnabled] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -58,8 +58,8 @@ const ForgotPasswordPage: React.FC = () => {
         </div>
       </div>
       <div className="flex items-center justify-center min-h-screen p-4 bg-slate-100">
-        <form onSubmit={handleSubmit} className="max-w-lg w-full bg-white p-10 rounded-2xl shadow-lg"> {/* Enlarged form */}
-          <h2 className="text-4xl mt-10 text-slate-700 font-extrabold mb-6 text-center">🔓 Forgot Password</h2> {/* Larger heading */}
+        <form onSubmit={handleSubmit} className="max-w-lg w-full bg-white p-10 rounded-2xl shadow-lg">
+          <h2 className="text-4xl mt-10 text-slate-700 font-extrabold mb-6 text-center">🔓 Forgot Password</h2>
           <input
             type="email"
             value={email}
@@ -72,7 +72,7 @@ const ForgotPasswordPage: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              className={`flex-1 text-white ${loading ? 'bg-green-500' : 'bg-indigo-600'} transition-all duration-300 rounded-full shadow-md`} // Added rounded and shadow
+              className={`flex-1 text-white ${loading ? 'bg-green-500' : 'bg-indigo-600'} transition-all duration-300 rounded-full shadow-md`}
               disabled={loading}
             >
               {loading ? (
@@ -87,7 +87,7 @@ const ForgotPasswordPage: React.FC = () => {
 
             <Button
               variant="outlined"
-              className={`flex-1 text-indigo-600 border-indigo-600 ${!gmailEnabled ? 'bg-gray-300' : 'hover:bg-indigo-600 hover:text-white'}`} // Enhanced button styling
+              className={`flex-1 text-indigo-600 border-indigo-600 ${!gmailEnabled ? 'bg-gray-300' : 'hover:bg-indigo-600 hover:text-white'}`}
               disabled={!gmailEnabled}
               onClick={handleGmailClick}
             >
@@ -95,7 +95,6 @@ const ForgotPasswordPage: React.FC = () => {
             </Button>
           </div>
 
-          {/* Link to go back to the login page */}
           <div className="text-center mt-4">
             <p className="text-sm">
               Remembered your password?
