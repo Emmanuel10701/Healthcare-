@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import Image from "next/image";
 import prisma from '../../../libs/prisma'; // Adjust the import according to your project structure
 
-export async function POST(request: Request) {
+export async function POST(request) {
   const { email } = await request.json();
 
   // Validate email
