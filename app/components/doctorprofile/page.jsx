@@ -9,26 +9,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import Modal from '@mui/material/Modal';
 import Button from "@mui/material/Button";
 
-interface DoctorProfileData {
-    id: string;
-    name: string;
-    email: string;
-    specialty: string;
-    experience: string;
-    fees: string;
-    education: string;
-    address1: string;
-    address2: string;
-    aboutMe: string;
-    image: string;
-}
-
 const DoctorProfile = () => {
     const { data: session } = useSession();
-    const [doctorData, setDoctorData] = useState<DoctorProfileData | null>(null);
+    const [doctorData, setDoctorData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState(false);
-    const [formData, setFormData] = useState<DoctorProfileData | null>(null);
+    const [formData, setFormData] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -50,7 +36,7 @@ const DoctorProfile = () => {
         fetchDoctorProfile();
     }, [session]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (e) => {
         if (formData) {
             const { name, value } = e.target;
             setFormData({ ...formData, [name]: value });
@@ -136,7 +122,7 @@ const DoctorProfile = () => {
                                     {name === 'aboutMe' ? (
                                         <textarea
                                             name={name}
-                                            value={formData ? formData[name as keyof DoctorProfileData] : ''}
+                                            value={formData ? formData[name] : ''}
                                             onChange={handleInputChange}
                                             required
                                             disabled={!editing}
@@ -146,7 +132,7 @@ const DoctorProfile = () => {
                                         <input
                                             type={type}
                                             name={name}
-                                            value={formData ? formData[name as keyof DoctorProfileData] : ''}
+                                            value={formData ? formData[name] : ''}
                                             onChange={handleInputChange}
                                             required
                                             disabled={!editing || disabled}
