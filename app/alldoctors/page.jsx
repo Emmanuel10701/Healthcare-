@@ -32,22 +32,11 @@ const specialties = [
   'Gynecologist',
 ];
 
-// Emoji mapping for specialties
-const specialtyEmojis: { [key: string]: string } = {
-  Dentist: '🦷',
-  'General Physician': '👨‍⚕️',
-  Dermatologist: '🧴',
-  Pediatrician: '👶',
-  Gastroenterologist: '🍽️',
-  Neurologist: '🧠',
-  Gynecologist: '👩‍⚕️',
-};
-
-const DoctorsPage: React.FC = () => {
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('All');
+const DoctorsPage = () => {
+  const [selectedSpecialty, setSelectedSpecialty] = useState('All');
   const router = useRouter();
 
-  const handleDoctorClick = (doctorId: number) => {
+  const handleDoctorClick = (doctorId) => {
     router.push(`/alldoctors/${doctorId}`);
   };
 
@@ -95,7 +84,7 @@ const DoctorsPage: React.FC = () => {
               />
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-green-700">
-                  {doctor.name} {specialtyEmojis[doctor.specialty] || '❓'}
+                  {doctor.name} 
                 </h2>
                 <p className="text-sm text-gray-600">{doctor.specialty}</p>
                 <p className={`mt-2 text-sm font-bold ${doctor.available ? 'text-green-400' : 'text-red-400'}`}>
