@@ -6,30 +6,11 @@ import { useSession } from "next-auth/react";
 import { CircularProgress } from "@mui/material";
 import { doctorsData } from '../components/data'; // Import your local doctor data
 
-// Define types for appointment and doctor
-interface Appointment {
-  id: number;
-  date: string;
-  time: string;
-  fee: number;
-  patientName: string;
-  doctorId: number;
-}
-
-interface Doctor {
-  id: number;
-  name: string;
-  specialty: string;
-  degree: string;
-  description: string;
-  image: string;
-}
-
-const AppointmentDetail: React.FC = () => {
-  const { data: session } = useSession() as { data: { user: { name: string; id: string } } | null };
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [doctors, setDoctors] = useState<{ [key: number]: Doctor }>({});
-  const [paymentStatus, setPaymentStatus] = useState<'pending' | 'paid'>('pending');
+const AppointmentDetail = () => {
+  const { data: session } = useSession();
+  const [appointments, setAppointments] = useState([]);
+  const [doctors, setDoctors] = useState({});
+  const [paymentStatus, setPaymentStatus] = useState('pending');
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
@@ -38,19 +19,16 @@ const AppointmentDetail: React.FC = () => {
       if (!session) return;
 
       try {
-        // Fetch appointments for the logged-in user
         const response = await fetch(`/api/appointments?userId=${session.user.id}`);
-        const data: Appointment[] = await response.json();
+        const data = await response.json();
         
-        // Filter appointments based on the user's name (case-insensitive)
         const userAppointments = data.filter((appt) => 
           appt.patientName.toLowerCase() === session.user.name.toLowerCase()
         );
 
         setAppointments(userAppointments);
 
-        // Map doctor IDs to doctor details for quick access
-        const doctorMap: { [key: number]: Doctor } = {};
+        const doctorMap = {};
         userAppointments.forEach((appt) => {
           const selectedDoctor = doctorsData.find(doctor => doctor.id === appt.doctorId);
           if (selectedDoctor) {
@@ -66,7 +44,7 @@ const AppointmentDetail: React.FC = () => {
     fetchAppointments();
   }, [session]);
 
-  const handlePayment = async (method: 'stripe' | 'paypal', appointmentId: number, fee: number, cardDetails: any) => {
+  const handlePayment = async (method, appointmentId, fee, cardDetails) => {
     const url = method === 'stripe' ? '/api/payments/stripe' : '/api/payments/paypal';
     try {
       const response = await fetch(url, {
@@ -98,13 +76,13 @@ const AppointmentDetail: React.FC = () => {
   return (
     <>
       <div className="flex flex-col p-8 mt-32 mx-auto max-w-6xl">
-      <h2 className="text-4xl font-bold mb-4 text-center bg-gradient-to-r from-orange-500 via-pink-500 to-indigo-500 text-transparent bg-clip-text">
-        Your Appointments
-      </h2>
+        <h2 className="text-4xl font-bold mb-4 text-center bg-gradient-to-r from-orange-500 via-pink-500 to-indigo-500 text-transparent bg-clip-text">
+          Your Appointments
+        </h2>
         {appointments.length === 0 ? (
           <p className="text-center text-slate-500 text-lg font-semibold">
-  No appointments found for you.
-</p>
+            No appointments found for you.
+          </p>
         ) : (
           appointments.map((appointment) => {
             const doctor = doctors[appointment.id];
