@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
@@ -9,23 +9,12 @@ import Image from 'next/image';
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 
-interface PatientDetails {
-  name: string;
-  email: string;
-  phone: string;
-  birthDate: string;
-  gender: string;
-  address: string;
-  aboutMe: string;
-  image: string; // URL string for the image
-}
-
-const PatientProfile: React.FC = () => {
+const PatientProfile = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const [isEditing, setIsEditing] = useState<boolean>(true);
-  const [patientDetails, setPatientDetails] = useState<PatientDetails>({
+  const [isEditing, setIsEditing] = useState(true);
+  const [patientDetails, setPatientDetails] = useState({
     name: '',
     email: session?.user?.email || '',
     phone: '',
@@ -36,8 +25,8 @@ const PatientProfile: React.FC = () => {
     image: session?.user?.image || '/images/default.png',
   });
 
-  const [isDataSubmitted, setIsDataSubmitted] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isDataSubmitted, setIsDataSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const apiUrl = 'http://localhost:3000/api/profile';
 
@@ -50,16 +39,16 @@ const PatientProfile: React.FC = () => {
     }
   }, [status, session, router]);
 
-  const fetchPatientDetails = async (email: string) => {
+  const fetchPatientDetails = async (email) => {
     try {
       const response = await axios.get(`${apiUrl}/email/${email}`);
       setPatientDetails(response.data);
-    } catch (error: any) {
+    } catch (error) {
       toast.error(`Error fetching patient: ${error.message}`);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setPatientDetails((prev) => ({ ...prev, [name]: value }));
   };
@@ -69,7 +58,7 @@ const PatientProfile: React.FC = () => {
     const formData = new FormData();
     Object.entries(patientDetails).forEach(([key, value]) => {
       if (value) {
-        formData.append(key, value as string);
+        formData.append(key, value);
       }
     });
 
@@ -77,7 +66,7 @@ const PatientProfile: React.FC = () => {
       await axios.put(`${apiUrl}/${patientDetails.email}`, formData);
       toast.success('Profile updated successfully');
       setIsDataSubmitted(true);
-    } catch (error: any) {
+    } catch (error) {
       toast.error(`Error saving profile: ${error.message}`);
     } finally {
       setIsSubmitting(false);
@@ -133,7 +122,7 @@ const PatientProfile: React.FC = () => {
                   <input
                     type="text"
                     name={key}
-                    value={patientDetails[key as keyof PatientDetails] as string}
+                    value={patientDetails[key]}
                     onChange={handleChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                     disabled={!isEditing}
@@ -181,7 +170,7 @@ const PatientProfile: React.FC = () => {
                   <input
                     type="text"
                     name={key}
-                    value={patientDetails[key as keyof PatientDetails] as string}
+                    value={patientDetails[key]}
                     onChange={handleChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                     disabled={!isEditing}
