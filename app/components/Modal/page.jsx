@@ -6,13 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CircularProgress from '@mui/material/CircularProgress';
 
-interface MailModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSend: (subject: string, text: string) => Promise<void>;
-}
-
-const MailModal: React.FC<MailModalProps> = ({ isOpen, onClose, onSend }) => {
+const MailModal = ({ isOpen, onClose, onSend }) => {
   const [subject, setSubject] = useState('');
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
