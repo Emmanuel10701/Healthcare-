@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../libs/prisma';
+
 // GET request: Retrieve a single doctor by email
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   const { pathname } = req.nextUrl;
   const email = pathname.split('/').pop(); // Extract email from the URL
 
@@ -27,7 +28,7 @@ export async function GET(req: NextRequest) {
 }
 
 // PUT request: Update a doctor by ID
-export async function PUT(req: NextRequest) {
+export async function PUT(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
   const body = await req.json();
@@ -59,7 +60,7 @@ export async function PUT(req: NextRequest) {
 }
 
 // DELETE request: Delete a doctor by ID
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop(); // Extract ID from the URL
 
@@ -76,4 +77,3 @@ export async function DELETE(req: NextRequest) {
 
   return new NextResponse(null, { status: 204 });
 }
-
