@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const RegisterPage: React.FC = () => {
+const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,7 +18,7 @@ const RegisterPage: React.FC = () => {
 
   const router = useRouter();
   
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -35,7 +35,7 @@ const RegisterPage: React.FC = () => {
       setPassword('');
       router.push('/login');
       
-    } catch (error: any) {
+    } catch (error) {
       if (error.response) {
         const result = error.response.data;
         toast.error(result.message || 'An error occurred. Please try again.');
