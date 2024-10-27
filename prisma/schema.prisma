@@ -112,7 +112,7 @@ model Patient {
   aboutMe    String
   image      String   // URL of the image
 }
-model Appts {
+model Schedules {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   patientName String
   doctorEmail String   // Ensure this is non-nullable

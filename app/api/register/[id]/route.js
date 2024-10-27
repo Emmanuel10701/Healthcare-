@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import prisma from '../../../../../libs/prisma';
+import prisma from '../../../libs/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Handle GET, PUT, and DELETE requests for a single user

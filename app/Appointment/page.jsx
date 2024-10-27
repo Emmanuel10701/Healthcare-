@@ -1,10 +1,9 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { CircularProgress } from "@mui/material";
-import { doctorsData } from '../components/data'; // Import your local doctor data
+import { doctorsData } from '../components/data'; // Ensure this import is correct
 
 const AppointmentDetail = () => {
   const { data: session } = useSession();
@@ -18,10 +17,12 @@ const AppointmentDetail = () => {
     const fetchAppointments = async () => {
       if (!session) return;
 
+      const doctorName = session.user.name; // Extract doctor name from session
+
       try {
-        const response = await fetch(`/api/appointments?userId=${session.user.id}`);
+        const response = await fetch(`/api/appointments?doctorName=${doctorName}`);
         const data = await response.json();
-        
+
         const userAppointments = data.filter((appt) => 
           appt.patientName.toLowerCase() === session.user.name.toLowerCase()
         );
@@ -104,7 +105,7 @@ const AppointmentDetail = () => {
                   </div>
                   <div className="w-3/4 pl-4">
                     <h3 className="text-lg font-bold">{doctor?.name || "Loading..."}</h3>
-                    <p>Date: {appointment.date}</p>
+                    <p>Date: {new Date(appointment.date).toLocaleDateString()}</p>
                     <p>Time: {appointment.time}</p>
                     <p>Fee: <span className='font-extrabold text-green-700'>${appointment.fee}</span></p>
                     <button

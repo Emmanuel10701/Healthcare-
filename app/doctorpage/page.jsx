@@ -29,7 +29,7 @@ const Dashboard = () => {
   }, [status]);
 
   const fetchAppointments = async () => {
-    const res = await fetch('/api/appointments');
+    const res = await fetch('/api/appointment');
     const data = await res.json();
     const doctorEmail = session?.user?.email;
 
@@ -235,7 +235,7 @@ const Dashboard = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-4">Login Required</h2>
-            <p className="text-gray-700 mb-6">You need to be logged in to access this dashboard. Please log in to continue.</p>
+            <p className="text-gray-700 mb-6">You need to be logged in to access this dashboard. Please log in to continue please.</p>
             <div className="flex justify-end gap-4">
               <button
                 onClick={loginNavigation}

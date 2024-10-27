@@ -1,4 +1,4 @@
-import prisma from '../../../../../app/libs/prisma'; // Adjust the import according to your project structure
+import prisma from '../../../libs/prisma'; // Adjust the import according to your project structure
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req) {

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai'; // Importing icons from react-icons

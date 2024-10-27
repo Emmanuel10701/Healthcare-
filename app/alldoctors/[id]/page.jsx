@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { doctorsData } from "../../components/data"; // Ensure this import is correct
 import CircularProgress from '@mui/material/CircularProgress';
 
 const AppointmentDetail = () => {
@@ -22,20 +23,10 @@ const AppointmentDetail = () => {
 
   useEffect(() => {
     if (id) {
-      // Fetch doctor data from your API using the id
-      const fetchDoctor = async () => {
-        try {
-          const response = await fetch(`/api/doctors/${id}`);
-          const doctorData = await response.json();
-          setDoctor(doctorData);
-        } catch (error) {
-          console.error('Error fetching doctor data:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchDoctor();
+      // Find the doctor by ID in the static doctorsData array
+      const foundDoctor = doctorsData.find(doctor => doctor.id === parseInt(id));
+      setDoctor(foundDoctor);
+      setLoading(false);
     }
   }, [id]);
 
@@ -56,7 +47,7 @@ const AppointmentDetail = () => {
   };
 
   const confirmAppointment = async () => {
-    if (!session?.user) return;
+    if (!session?.user || !doctor) return;
 
     setAppointmentConfirmed(true);
     setModalOpen(false);
@@ -69,8 +60,7 @@ const AppointmentDetail = () => {
         },
         body: JSON.stringify({
           patientName: session.user.name,
-          doctorName: doctor?.name,
-          specialty: doctor?.specialty,
+          doctorName: doctor.name,  // Correctly retrieve doctor name here
           date: selectedDate?.toISOString(),
           time: selectedTime,
           fee: appointmentFee,
@@ -221,7 +211,7 @@ const AppointmentDetail = () => {
                 <h3 className="text-lg font-semibold">Login Required</h3>
                 <p className="mt-2">Please log in to confirm your appointment.</p>
                 <div className="flex justify-center mt-4">
-                  <button onClick={() => router.push("http://localhost:3000/login")} className="bg-transparent border border-blue-500 text-blue-500 py-3 px-6 rounded-full shadow hover:bg-blue-500 hover:text-white transition duration-200">
+                  <button onClick={() => router.push("/login")} className="bg-transparent border border-blue-500 text-blue-500 py-3 px-6 rounded-full shadow hover:bg-blue-500 hover:text-white transition duration-200">
                     Login
                   </button>
                   <button onClick={() => setLoginModalOpen(false)} className="bg-transparent border border-red-500 text-red-500 py-3 px-6 rounded-full shadow hover:bg-red-500 hover:text-white transition duration-200 ml-2">
