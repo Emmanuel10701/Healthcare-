@@ -4,27 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
-import {useRouter} from "next/navigation"
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify'; // Import toast
 import { z } from 'zod';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  image?: string;
-}
-
-declare module 'next-auth' {
-  interface Session {
-    user: {
-      id: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
-  }
-}
 
 const doctorSchema = z.object({
   name: z.string().nonempty("Name is required"),
@@ -52,9 +34,8 @@ const specialties = {
 const educationLevels = ['Associate', 'Bachelor', 'Master', 'PhD'];
 const feesOptions = Array.from({ length: 10 }, (_, i) => (50 + i * 50).toString());
 
-const AddDoctorForm: React.FC = () => {
+const AddDoctorForm = () => {
   const { data: session } = useSession();
-
   const [doctorName, setDoctorName] = useState('');
   const [doctorEmail, setDoctorEmail] = useState('');
   const [specialty, setSpecialty] = useState('');
@@ -65,9 +46,9 @@ const AddDoctorForm: React.FC = () => {
   const [address1, setAddress1] = useState('');
   const [address2, setAddress2] = useState('');
   const [aboutMe, setAboutMe] = useState('');
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [userOptions, setUserOptions] = useState<User[]>([]);
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // New state for userId
+  const [imageUrl, setImageUrl] = useState(null);
+  const [userOptions, setUserOptions] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -79,7 +60,7 @@ const AddDoctorForm: React.FC = () => {
         }
         const users = await response.json();
         setUserOptions(users);
-      } catch (error: any) {
+      } catch (error) {
         alert(`Error fetching users: ${error.message}`);
       }
     };
@@ -89,36 +70,35 @@ const AddDoctorForm: React.FC = () => {
 
   const router = useRouter();
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleEmailChange = (e) => {
     const selectedEmail = e.target.value;
     const selectedUser = userOptions.find(user => user.email === selectedEmail);
     if (selectedUser) {
       setDoctorName(selectedUser.name);
       setDoctorEmail(selectedEmail);
-      setSelectedUserId(selectedUser.id); // Set userId
+      setSelectedUserId(selectedUser.id);
     } else {
       setDoctorName('');
-      setSelectedUserId(null); // Clear userId
+      setSelectedUserId(null);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     if (!session || !session.user) {
-      setLoginModalOpen(true); // Open the modal instead of alert
+      setLoginModalOpen(true);
       setLoading(false);
       return;
     }
-  
-   
-  if (!selectedUserId) {
-    toast.error('User ID not found. Please select a valid email.');
-    setLoading(false);
-    return;
-  }
-  
+
+    if (!selectedUserId) {
+      toast.error('User ID not found. Please select a valid email.');
+      setLoading(false);
+      return;
+    }
+
     const formData = {
       name: doctorName,
       email: doctorEmail,
@@ -132,11 +112,11 @@ const AddDoctorForm: React.FC = () => {
       userId: selectedUserId,
       image: imageUrl,
     };
-  
+
     console.log("Form Data:", formData); // Log form data for debugging
-  
+
     const validationResult = doctorSchema.safeParse(formData);
-    
+
     if (!validationResult.success) {
       validationResult.error.errors.forEach((error) => {
         toast.error(error.message);
@@ -144,7 +124,7 @@ const AddDoctorForm: React.FC = () => {
       setLoading(false);
       return;
     }
-  
+
     try {
       const response = await axios.post('/api/doctors', formData);
       if (response.status === 201) {
@@ -166,7 +146,7 @@ const AddDoctorForm: React.FC = () => {
       } else {
         toast.error('Failed to add doctor');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error adding doctor:", error); // Log the error for debugging
       toast.error('Error adding doctor: A doctor with this email already exists.');
     } finally {
@@ -234,20 +214,20 @@ const AddDoctorForm: React.FC = () => {
 
         {/* Experience and Fees */}
         <div className="flex flex-col sm:flex-row sm:space-x-6">
-        <div className="flex flex-col flex-1 mb-4 sm:mb-0">
-          <label className="font-semibold mb-1">Experience</label>
-          <select
-            value={experience}
-            onChange={(e) => setExperience(e.target.value)}
-            required
-            className="p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500"
-          >
-            <option value="" disabled>Select Experience</option>
-            {Array.from({ length: 10 }, (_, i) => `${i + 1} year${i === 0 ? '' : 's'}`).concat(['10+ years']).map((exp) => (
-              <option key={exp} value={exp}>{exp}</option>
-            ))}
-          </select>
-        </div>
+          <div className="flex flex-col flex-1 mb-4 sm:mb-0">
+            <label className="font-semibold mb-1">Experience</label>
+            <select
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              required
+              className="p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500"
+            >
+              <option value="" disabled>Select Experience</option>
+              {Array.from({ length: 10 }, (_, i) => `${i + 1} year${i === 0 ? '' : 's'}`).concat(['10+ years']).map((exp) => (
+                <option key={exp} value={exp}>{exp}</option>
+              ))}
+            </select>
+          </div>
 
           <div className="flex flex-col flex-1">
             <label className="font-semibold mb-1">Fees</label>
@@ -331,27 +311,25 @@ const AddDoctorForm: React.FC = () => {
             'Add Doctor'
           )}
         </button>
-
       </form>
 
-       {/* Login Modal */}
-       {loginModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white p-12 rounded-lg shadow-lg w-full max-w-2xl">
-                <h3 className="text-lg font-semibold">Login Required</h3>
-                <p className="mt-2">Please log in to confirm your appointment.</p>
-                <div className="flex justify-center mt-4">
-                  <button onClick={() => router.push("http://localhost:3000/login")} className="bg-transparent border border-blue-500 text-blue-500 py-3 px-6 rounded-full shadow hover:bg-blue-500 hover:text-white transition duration-200">
-                    Login
-                  </button>
-                  <button onClick={() => setLoginModalOpen(false)} className="bg-transparent border border-red-500 text-red-500 py-3 px-6 rounded-full shadow hover:bg-red-500 hover:text-white transition duration-200 ml-2">
-                    Cancel
-                  </button>
-                </div>
-              </div>
+      {/* Login Modal */}
+      {loginModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-12 rounded-lg shadow-lg w-full max-w-2xl">
+            <h3 className="text-lg font-semibold">Login Required</h3>
+            <p className="mt-2">Please log in to confirm your appointment.</p>
+            <div className="flex justify-center mt-4">
+              <button onClick={() => router.push("http://localhost:3000/login")} className="bg-transparent border border-blue-500 text-blue-500 py-3 px-6 rounded-full shadow hover:bg-blue-500 hover:text-white transition duration-200">
+                Login
+              </button>
+              <button onClick={() => setLoginModalOpen(false)} className="bg-transparent border border-red-500 text-red-500 py-3 px-6 rounded-full shadow hover:bg-red-500 hover:text-white transition duration-200 ml-2">
+                Cancel
+              </button>
             </div>
-          )}
-
+          </div>
+        </div>
+      )}
     </div>
   );
 };
