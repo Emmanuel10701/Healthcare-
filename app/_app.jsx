@@ -11,17 +11,19 @@ const geistSans = localFont({
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
 
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
+// Remove TypeScript type annotations
+export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
   // Define pages to exclude Navbar and Footer
-  const excludedPaths = ['/login', '/register', '/forgot', '/admin', '/reset',"/profilePage",'/doctorpage'];
+  const excludedPaths = ['/login', '/register', '/forgot', '/admin', '/reset', "/profilePage", '/doctorpage'];
 
   const isExcluded = excludedPaths.includes(pathname);
 

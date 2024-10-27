@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'; 
-import prisma from '../../../libs/prisma';
+import prisma from '../../../../app/libs/prisma'; // Adjust the import according to your project structure
 import { NextResponse } from 'next/server';
 
 // POST request: Register a new user

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import prisma from '../../../libs/prisma'; // Adjust the path as needed
+import prisma from '../../../../app/libs/prisma'; // Adjust the import according to your project structure
 import { v4 as uuidv4 } from 'uuid';
 
 const transporter = nodemailer.createTransport({

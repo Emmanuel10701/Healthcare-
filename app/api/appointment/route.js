@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../libs/prisma'; // Adjust the import according to your project structure
+import prisma from '../../../app/libs/prisma'; // Adjust the import according to your project structure
 
 // Handle POST request to create a new appointment
 export async function POST(request) {
