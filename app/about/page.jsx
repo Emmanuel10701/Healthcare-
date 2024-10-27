@@ -1,10 +1,9 @@
-"use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai'; // Importing icons from react-icons
 
-const AboutMePage: React.FC = () => {
-  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+const AboutMePage = () => {
+  const [openFAQ, setOpenFAQ] = useState(null);
 
   const faqs = [
     { question: "🤔 What services do you offer?", answer: "We offer a variety of health services including general check-ups, consultations, and specialist referrals. 🩺" },
@@ -46,8 +45,8 @@ const AboutMePage: React.FC = () => {
             Prescripto is committed to excellence in healthcare technology. We continuously strive to enhance our platform, integrating the latest advancements to improve user experience and deliver superior service. Whether you're booking your first appointment or managing ongoing care, Prescripto is here to support you every step of the way.
           </p>
           <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text mb-4">
-            Our Vission  
-            </h2>
+            Our Vision  
+          </h2>
           <p className="text-gray-600 text-justify">
             Our vision at Prescripto is to create a seamless healthcare experience for every user. We aim to bridge the gap between patients and healthcare providers, making it easier for you to access the care you need, when you need it.
           </p>
@@ -56,10 +55,10 @@ const AboutMePage: React.FC = () => {
 
       {/* FAQ Section */}
       <div className="mb-12">
-      <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-5">
-        Frequent Asked Questions        
+        <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-5">
+          Frequently Asked Questions        
         </h1>         
-      <div className="flex flex-col md:flex-row gap-10 items-center mb-6">
+        <div className="flex flex-col md:flex-row gap-10 items-center mb-6">
           <div className="flex-1 ml-0 md:ml-4">
             <div className="space-y-2">
               {faqs.map((faq, index) => (
@@ -98,8 +97,8 @@ const AboutMePage: React.FC = () => {
 
       {/* Services Section */}
       <div>
-      <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-5">
-        What we offer
+        <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-5">
+          What we offer
         </h1> 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {services.map(service => (
