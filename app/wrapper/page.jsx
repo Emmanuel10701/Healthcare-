@@ -2,7 +2,7 @@
 
 import { SessionProvider } from 'next-auth/react';
 
-const SessionProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const SessionProviderWrapper = ({ children }) => {
   return <SessionProvider>{children}</SessionProvider>;
 };
 
