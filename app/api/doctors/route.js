@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../libs/prisma'; // Adjust the path as needed
 
 // Handle POST request to create a new doctor
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const body = await req.json();
     const {
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     // Validate required fields
     if (!name || !email) {
       return new NextResponse(
-        JSON.stringify({ error: 'Name and email are required' }), 
+        JSON.stringify({ error: 'Name and email are required' }),
         { status: 400 }
       );
     }
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     if (!user) {
       return new NextResponse(
-        JSON.stringify({ error: 'User not found' }), 
+        JSON.stringify({ error: 'User not found' }),
         { status: 404 }
       );
     }
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
     if (existingDoctor) {
       return new NextResponse(
-        JSON.stringify({ error: 'Doctor with this email already exists' }), 
+        JSON.stringify({ error: 'Doctor with this email already exists' }),
         { status: 400 }
       );
     }
@@ -68,17 +68,17 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(newDoctor, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error creating doctor:', error);
     return new NextResponse(
-      JSON.stringify({ error: 'Error creating doctor', details: error.message }), 
+      JSON.stringify({ error: 'Error creating doctor', details: error.message }),
       { status: 500 }
     );
   }
 }
 
 // Handle GET request to retrieve doctors
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
@@ -92,7 +92,7 @@ export async function GET(req: NextRequest) {
 
       if (!doctor) {
         return new NextResponse(
-          JSON.stringify({ error: 'Doctor not found' }), 
+          JSON.stringify({ error: 'Doctor not found' }),
           { status: 404 }
         );
       }
@@ -105,10 +105,10 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.json(doctors);
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching doctors:', error);
     return new NextResponse(
-      JSON.stringify({ error: 'Error fetching doctors', details: error.message }), 
+      JSON.stringify({ error: 'Error fetching doctors', details: error.message }),
       { status: 500 }
     );
   }
