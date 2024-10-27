@@ -3,7 +3,7 @@ import prisma from '../../../../libs/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Handle GET, PUT, and DELETE requests for a single user
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req, { params }) {
   const { id } = params;
 
   try {
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req, { params }) {
   const { id } = params;
 
   try {
@@ -80,7 +80,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req, { params }) {
   const { id } = params;
 
   try {
