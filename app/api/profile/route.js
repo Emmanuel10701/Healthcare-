@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../libs/prisma';
 
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const { name, email, phone, birthDate, gender, address, aboutMe, image } = await req.json();
 
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(newPatient, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error creating patient:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error creating patient', details: error.message }),
@@ -37,11 +37,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   try {
     const patients = await prisma.patient.findMany();
     return NextResponse.json(patients);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching patients:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Error fetching patients', details: error.message }),
