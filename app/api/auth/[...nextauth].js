@@ -1,12 +1,10 @@
-
-
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '../../../libs/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -35,7 +33,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         return {
-          id: user.id, // Ensure id is returned
+          id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
@@ -45,10 +43,10 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  secret: process.env.SECRET!,
+  secret: process.env.SECRET,
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 2, // Session expires in 2 hrs
+    maxAge: 60 * 60 * 2, // Session expires in 2 hours
   },
   pages: {
     signIn: '/login',     // Custom login page
@@ -68,8 +66,8 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (user) {
-            (session.user as any).role = user.role; // Add role to the session
-            (session.user as any).id = token.id; // Add id to the session
+            session.user.role = user.role; // Add role to the session
+            session.user.id = token.id; // Add id to the session
           }
         } catch (error) {
           console.error('Error fetching user role:', error);
