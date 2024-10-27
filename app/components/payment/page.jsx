@@ -3,19 +3,13 @@ import React, { useState } from 'react';
 import Modal from 'react-modal'; // Make sure to install react-modal
 import { CircularProgress } from '@mui/material';
 
-interface PaymentModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onPayment: (method: 'stripe' | 'paypal', cardDetails: any) => Promise<void>;
-}
-
-const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onPayment }) => {
+const PaymentModal = ({ isOpen, onClose, onPayment }) => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvc, setCvc] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handlePayment = async (method: 'stripe' | 'paypal') => {
+  const handlePayment = async (method) => {
     setLoading(true);
     const cardDetails = { cardNumber, expiryDate, cvc };
 
