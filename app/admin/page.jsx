@@ -5,23 +5,15 @@ import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import MailModal from '../components/Modal/page'; // Import the MailModal component
+import MailModal from '../components/Modal/page';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { signOut } from 'next-auth/react';
-import { FaUserMd, FaCalendarCheck, FaListUl, FaPlus, FaBars,FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
+import { FaUserMd, FaCalendarCheck, FaListUl, FaPlus, FaBars, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
 import { CircularProgress } from '@mui/material';
 import AddDoctorForm from '../components/adddoctor/page';
-import AppointmentList from '../components/appoinements/page'; // Import the new component
-
-import { FaExclamationTriangle } from 'react-icons/fa'; // Import a colored icon
-
-
-interface Subscriber {
-  email: string;
-  createdAt: string;
-}
-
+import AppointmentList from '../components/appoinements/page';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 const patients = [
   { id: 1, name: 'John Doe', age: 30, image: '/assets/assets_frontend/profile_pic.png' },
@@ -31,47 +23,29 @@ const patients = [
   { id: 5, name: 'Charlie Green', age: 28, image: '/assets/assets_frontend/doc12.png' },
 ];
 
-const Dashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'appointments' | 'subscribers' | 'patients' | 'doctors' | 'addDoctor'>('appointments');
+const Dashboard = () => {
+  const [activeTab, setActiveTab] = useState('appointments');
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [subscribers, setSubscribers] = useState([]);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [subject, setSubject] = useState('');
+  const [text, setText] = useState('');
+  const router = useRouter();
 
-  const handleTabChange = (tab: 'appointments' | 'subscribers' | 'patients' | 'doctors' | 'addDoctor') => {
+  const handleTabChange = (tab) => {
     setLoading(true);
     setTimeout(() => {
       setActiveTab(tab);
       setLoading(false);
       setSidebarOpen(false);
-    }, 1000); // Simulate a loading delay
+    }, 1000);
   };
-
-
-  
-  // Fetch appointments based on doctor's email
-  useEffect(() => {
-    if (status === 'authenticated') {
-      fetchSubscribers();
-    } else if (status === 'unauthenticated') {
-      setIsModalOpen(true); // Show the login modal when unauthenticated
-    }
-  }, [status]);
-  const router = useRouter();
-
-
-  const loginNavigation = () => {
-    router.push('/login');
-  };
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [subject, setSubject] = useState('');
-  const [text, setText] = useState('');
-
-  // ... existing useEffect and functions
 
   const fetchSubscribers = async () => {
     try {
-      const response = await axios.get<Subscriber[]>('http://localhost:3000/api/subs');
+      const response = await axios.get('http://localhost:3000/api/subs');
       setSubscribers(response.data);
     } catch (err) {
       setError('Failed to fetch subscribers');
@@ -82,7 +56,7 @@ const Dashboard: React.FC = () => {
     fetchSubscribers();
   }, []);
 
-  const handleSendEmail = async (subject: string, message: string) => {
+  const handleSendEmail = async (subject, message) => {
     try {
       await axios.post('http://localhost:3000/api/mailing', { 
         subject, 
@@ -90,7 +64,6 @@ const Dashboard: React.FC = () => {
         subscribers 
       });
       toast.success('Email sent successfully to all subscribers!');
-      alert('Email sent successfully to all subscribers!');
       setSubject('');
       setText('');  
       setIsModalOpen(false);
@@ -98,7 +71,7 @@ const Dashboard: React.FC = () => {
       toast.error('Failed to send email');
     }
   };
-;
+
   const doctors = [
     { id: 1, name: 'Dr. Smith', specialty: 'Dentist', image: '/assets/assets_frontend/doc1.png', available: true },
     { id: 2, name: 'Dr. Jones', specialty: 'General Physician', image: '/assets/assets_frontend/doc2.png', available: false },
@@ -117,27 +90,25 @@ const Dashboard: React.FC = () => {
     { id: 15, name: 'Dr. Erick', specialty: 'Pediatrician', image: '/assets/assets_frontend/doc14.png', available: false },
   ];
 
-  if (loading) return  <div className="flex justify-center items-center h-screen">
-  <CircularProgress />
-</div>;
+  if (loading) return <div className="flex justify-center items-center h-screen"><CircularProgress /></div>;
 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-center">
+        <FaExclamationTriangle className="text-red-500 mb-4" style={{ fontSize: '48px' }} />
+        <h2 className="text-xl font-semibold text-gray-800">Something went wrong!</h2>
+        <p className="text-gray-600">{error}</p>
+      </div>
+    );
+  }
 
-if (error) {
-  return (
-    <div className="flex flex-col items-center justify-center h-screen text-center">
-      <FaExclamationTriangle className="text-red-500 mb-4" style={{ fontSize: '48px' }} />
-      <h2 className="text-xl font-semibold text-gray-800">Something went wrong!</h2>
-      <p className="text-gray-600">{error}</p>
-    </div>
-  );
-}
   return (
     <>
       <div className="fixed top-0 left-0 w-full bg-white border-b border-blue-300 py-4 z-50 flex items-center justify-between">
         <div className="container mx-auto flex justify-between items-center px-4 md:px-8">
           <div className="w-44 cursor-pointer flex items-center">
             <Image src="/assets/assets_frontend/logo.svg" alt="Logo" width={176} height={50} />
-            <span className="ml-3 bg-white rounded-full text-blue-600 px-4 py-1 shadow-md md:hidden"  onClick={() => setSidebarOpen(!sidebarOpen)} >Menu</span>
+            <span className="ml-3 bg-white rounded-full text-blue-600 px-4 py-1 shadow-md md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>Menu</span>
           </div>
         </div>
         <button 
@@ -158,7 +129,7 @@ if (error) {
               <FaCalendarCheck className="mr-2 text-indigo-600" /> Appointments
             </button>
             <button onClick={() => handleTabChange('patients')} className={`flex items-center p-2 text-gray-600 hover:bg-gray-200 rounded ${activeTab === 'patients' ? 'font-bold text-indigo-600' : ''}`}>
-            <FaUserMd className="mr-2 text-indigo-600" /> Patients
+              <FaUserMd className="mr-2 text-indigo-600" /> Patients
             </button>
             <button onClick={() => handleTabChange('doctors')} className={`flex items-center p-2 text-gray-600 hover:bg-gray-200 rounded ${activeTab === 'doctors' ? 'font-bold text-indigo-600' : ''}`}>
               <FaListUl className="mr-2 text-indigo-600" /> Doctors List
@@ -177,72 +148,69 @@ if (error) {
         )}
 
         <main className="flex-1 md:ml-[20%] ml-1 p-6 overflow-y-auto">
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="md:hidden ml-10 text-black">
-          <FaBars />
-        </button>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="md:hidden ml-10 text-black">
+            <FaBars />
+          </button>
           <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600 mt-20 mb-4">
             Welcome to Dashboard       
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-6 mb-6">
-          <div className="p-6 hover:shadow-lg bg-white rounded-lg shadow-md flex flex-col items-center justify-center w-full max-w-xs">
-            <h3 className="text-md text-center text-slate-600 font-bold">📅 Appointments</h3>
-            <p className="text-2xl font-bold text-center text-purple-700">{AppointmentList.length}</p>
+            <div className="p-6 hover:shadow-lg bg-white rounded-lg shadow-md flex flex-col items-center justify-center w-full max-w-xs">
+              <h3 className="text-md text-center text-slate-600 font-bold">📅 Appointments</h3>
+              <p className="text-2xl font-bold text-center text-purple-700">{AppointmentList.length}</p>
+            </div>
+            <div className="p-6 hover:shadow-lg bg-white rounded-lg shadow-md flex flex-col items-center justify-center w-full max-w-xs">
+              <h3 className="text-md text-center text-slate-600 font-bold">👨‍⚕️ Total Doctors</h3>
+              <p className="text-2xl text-center font-bold text-blue-700">{doctors.length}</p>
+            </div>
+            <div className="p-6 hover:shadow-lg bg-white rounded-lg shadow-md flex flex-col items-center justify-center w-full max-w-xs">
+              <h3 className="text-md text-center text-slate-600 font-bold">🧑‍🍼 Total Patients</h3>
+              <p className="text-2xl text-center font-bold text-green-700">{patients.length}</p>
+            </div>
           </div>
-          <div className="p-6 hover:shadow-lg bg-white rounded-lg shadow-md flex flex-col items-center justify-center w-full max-w-xs">
-            <h3 className="text-md text-center text-slate-600 font-bold">👨‍⚕️ Total Doctors</h3>
-            <p className="text-2xl text-center font-bold text-blue-700">{doctors.length}</p>
-          </div>
-          <div className="p-6 hover:shadow-lg bg-white rounded-lg shadow-md flex flex-col items-center justify-center w-full max-w-xs">
-            <h3 className="text-md text-center text-slate-600 font-bold">🧑‍🍼 Total Patients</h3>
-            <p className="text-2xl text-center font-bold text-green-700">{patients.length}</p>
-          </div>
-        </div>
-   {loading ? (
+
+          {loading ? (
             <div className="flex items-center mt-20 justify-center h-full">
               <CircularProgress size={32} />
             </div>
           ) : (
             <>
-       {activeTab === 'appointments' && <AppointmentList />}
-
-
-{activeTab === 'patients' && (
-  <>
-    <h2 className="text-xl sm:text-2xl font-semibold mb-4">Patients</h2>
-    <table className="min-w-full bg-white border border-gray-300">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="py-2 border-b text-xs sm:text-base">Image</th>
-          <th className="py-2 border-b text-xs sm:text-base">Name</th>
-          <th className="py-2 border-b text-xs sm:text-base">Age</th>
-        </tr>
-      </thead>
-      <tbody>
-        {patients.map((patient) => (
-          <tr key={patient.id}>
-            <td className="py-1 text-slate-600 shadow-lg bg-white font-extrabold">
-              <div className="flex gap-3 items-center">
-                <Image 
-                  src={patient.image} 
-                  alt="Patient Image" 
-                  width={40} 
-                  height={40} 
-                  className="w-16 h-16 rounded-full"
-                />
-              </div>
-            </td>
-            <td>
-              <span className="text-sm sm:text-lg text-center font-bold">{patient.name}</span>
-            </td>
-            <td className="py-2 text-center text-blue-700 text-sm sm:text-base">{patient.age}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </>
-)}
-
-
+              {activeTab === 'appointments' && <AppointmentList />}
+              {activeTab === 'patients' && (
+                <>
+                  <h2 className="text-xl sm:text-2xl font-semibold mb-4">Patients</h2>
+                  <table className="min-w-full bg-white border border-gray-300">
+                    <thead>
+                      <tr className="bg-gray-100">
+                        <th className="py-2 border-b text-xs sm:text-base">Image</th>
+                        <th className="py-2 border-b text-xs sm:text-base">Name</th>
+                        <th className="py-2 border-b text-xs sm:text-base">Age</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {patients.map((patient) => (
+                        <tr key={patient.id}>
+                          <td className="py-1 text-slate-600 shadow-lg bg-white font-extrabold">
+                            <div className="flex gap-3 items-center">
+                              <Image 
+                                src={patient.image} 
+                                alt="Patient Image" 
+                                width={40} 
+                                height={40} 
+                                className="w-16 h-16 rounded-full"
+                              />
+                            </div>
+                          </td>
+                          <td>
+                            <span className="text-sm sm:text-lg text-center font-bold">{patient.name}</span>
+                          </td>
+                          <td className="py-2 text-center text-blue-700 text-sm sm:text-base">{patient.age}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              )}
               {activeTab === 'doctors' && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                   {doctors.map(doctor => (
@@ -266,50 +234,47 @@ if (error) {
                   ))}
                 </div>
               )}
-
               {activeTab === 'addDoctor' && <AddDoctorForm />}
-              
-                        {activeTab === 'subscribers' && (
-            <div className='overflow-hidden'>
-              <h1 className="text-xl font-bold mb-4">Subscribers List</h1>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-gradient-to-r from-blue-500 to-green-500 text-transparent text-white font-bold py-2 px-4 rounded-full mb-4"
-              >
-                Mail All Subscribers
-              </button>
-              <MailModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSend={handleSendEmail} />
-              <table className="min-w-full bg-white border border-gray-300">
-                <thead>
-                  <tr>
-                    <th className="py-2 px-4 border-b text-slate-600 font-extrabold text-center">Email</th>
-                    <th className="py-2 px-4 border-b text-slate-600 font-extrabold text-center">Date Added</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {subscribers.map((subscriber) => (
-                    <tr key={subscriber.email}>
-                      <td className="py-2 px-4 border-b text-slate-500">{subscriber.email}</td>
-                      <td className="py-2 px-4 border-b text-slate-500">{new Date(subscriber.createdAt).toLocaleDateString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-             {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Login Required</h2>
-            <p className="text-gray-700 mb-6">You need to be logged in to access this dashboard. Please log in to continue.</p>
-            <div className="flex justify-end gap-4">
-              <button onClick={loginNavigation} className="bg-blue-600 text-white px-4 py-2 rounded-full">Go to Login</button>
-              <button onClick={() => setIsModalOpen(false)} className="bg-gray-300 text-gray-800 px-4 py-2 rounded-full">Close</button>
-            </div>
-          </div>
-        </div>
-      )}
-
+              {activeTab === 'subscribers' && (
+                <div className='overflow-hidden'>
+                  <h1 className="text-xl font-bold mb-4">Subscribers List</h1>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="bg-gradient-to-r from-blue-500 to-green-500 text-transparent text-white font-bold py-2 px-4 rounded-full mb-4"
+                  >
+                    Mail All Subscribers
+                  </button>
+                  <MailModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSend={handleSendEmail} />
+                  <table className="min-w-full bg-white border border-gray-300">
+                    <thead>
+                      <tr>
+                        <th className="py-2 px-4 border-b text-slate-600 font-extrabold text-center">Email</th>
+                        <th className="py-2 px-4 border-b text-slate-600 font-extrabold text-center">Date Added</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {subscribers.map((subscriber) => (
+                        <tr key={subscriber.email}>
+                          <td className="py-2 px-4 border-b text-slate-500">{subscriber.email}</td>
+                          <td className="py-2 px-4 border-b text-slate-500">{new Date(subscriber.createdAt).toLocaleDateString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg">
+                    <h2 className="text-2xl font-bold mb-4">Login Required</h2>
+                    <p className="text-gray-700 mb-6">You need to be logged in to access this dashboard. Please log in to continue.</p>
+                    <div className="flex justify-end gap-4">
+                      <button onClick={() => router.push('/login')} className="bg-blue-600 text-white px-4 py-2 rounded-full">Go to Login</button>
+                      <button onClick={() => setIsModalOpen(false)} className="bg-gray-300 text-gray-800 px-4 py-2 rounded-full">Close</button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </main>

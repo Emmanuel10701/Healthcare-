@@ -7,46 +7,35 @@ import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import CircularProgress from '@mui/material/CircularProgress';
 
-// Sample doctors data for demonstration
-const doctorsData = [
-  {
-    id: 1,
-    name: "Dr. Smith",
-    specialty: "Cardiology",
-    degree: "MD",
-    description: "Heart specialist.",
-    image: "/images/doctor1.jpg",
-  },
-  // Add more doctors as needed
-];
-
-interface Doctor {
-  id: number;
-  name: string;
-  specialty: string;
-  degree: string;
-  description: string;
-  image: string;
-}
-
-const AppointmentDetail: React.FC = () => {
+const AppointmentDetail = () => {
   const { id } = useParams();
   const { data: session } = useSession();
-  const [doctor, setDoctor] = useState<Doctor | null>(null);
+  const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [appointmentConfirmed, setAppointmentConfirmed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
     if (id) {
-      const selectedDoctor = doctorsData.find(doc => doc.id === Number(id));
-      setDoctor(selectedDoctor || null);
-      setLoading(false);
+      // Fetch doctor data from your API using the id
+      const fetchDoctor = async () => {
+        try {
+          const response = await fetch(`/api/doctors/${id}`);
+          const doctorData = await response.json();
+          setDoctor(doctorData);
+        } catch (error) {
+          console.error('Error fetching doctor data:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchDoctor();
     }
   }, [id]);
 
@@ -100,8 +89,8 @@ const AppointmentDetail: React.FC = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalOpen && modalRef.current && !modalRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (modalOpen && modalRef.current && !modalRef.current.contains(event.target)) {
         setModalOpen(false);
       }
     };
