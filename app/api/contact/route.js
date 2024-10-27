@@ -1,16 +1,10 @@
-// app/api/contact/route.ts
+// app/api/contact/route.js
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-interface EmailRequest {
-  name: string;
-  email: string;
-  message: string;
-}
-
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
-    const { name, email, message }: EmailRequest = await request.json();
+    const { name, email, message } = await request.json();
 
     // Validate input
     if (!name || !email || !message) {
@@ -30,7 +24,7 @@ export async function POST(request: Request) {
     const mailOptionsToAdmin = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: 'New Inquiry from ' + name,
+      subject: `New Inquiry from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; background-color: #f0f4f8; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0;">
           <h2 style="color: #004b87;">New Inquiry from ${name}</h2>
@@ -55,7 +49,6 @@ export async function POST(request: Request) {
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e9f5ff; padding: 20px; border-radius: 8px; border: 1px solid #007BFF;">
           <h2 style="color: #007BFF; font-size: 24px;">Hello ${name},</h2>
           <p style="color: #333; font-size: 16px;">Welcome to Prescripto, your trusted partner in managing your healthcare needs conveniently and efficiently.</p>
-          <p style="color: #333; font-size: 16px;">We understand the challenges individuals face when it comes to scheduling doctor appointments and managing their health records.</p>
           <p style="color: #333; font-size: 16px;">Thank you for reaching out to us! Our team is currently reviewing your message, and we will get back to you as soon as possible.</p>
           <div style="background-color: #fff; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-top: 20px;">
             <p><strong>Your Message:</strong></p>
@@ -66,8 +59,9 @@ export async function POST(request: Request) {
       `,
     };
 
-    await transporter.sendMail(mailOptionsToAdmin); // Send email to admin
-    await transporter.sendMail(mailOptionsToUser); // Send confirmation to user
+    // Send emails
+    await transporter.sendMail(mailOptionsToAdmin);
+    await transporter.sendMail(mailOptionsToUser);
 
     return NextResponse.json({ message: 'Emails sent successfully' }, { status: 200 });
   } catch (error) {
