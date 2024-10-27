@@ -1,7 +1,7 @@
 import prisma from '../../../../libs/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop();
 
@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop();
   const body = await req.json();
@@ -93,7 +93,7 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req) {
   const { pathname } = req.nextUrl;
   const id = pathname.split('/').pop();
 
