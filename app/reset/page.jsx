@@ -1,6 +1,6 @@
 "use client"; // This component must be a client component
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,7 +23,15 @@ const ResetPasswordPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const token = new URLSearchParams(window.location.search).get('token');
+  const [token, setToken] = useState('');
+
+  // Safely access token from URL
+  useEffect(() => {
+    const urlToken = new URLSearchParams(window.location.search).get('token');
+    if (urlToken) {
+      setToken(urlToken);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

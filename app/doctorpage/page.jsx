@@ -1,5 +1,6 @@
-"use client";
-import React, { useState, useEffect } from 'react';
+"use client"; // This component must be a client component
+
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { FaUserMd, FaCalendarCheck, FaBars } from 'react-icons/fa';
 import { CircularProgress } from '@mui/material';
@@ -20,25 +21,33 @@ const Dashboard = () => {
   const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+  const fetchAppointments = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/appointment');
+      if (!res.ok) throw new Error('Failed to fetch appointments');
+      const data = await res.json();
+      const doctorEmail = session?.user?.email;
+
+      if (doctorEmail) {
+        const filteredAppointments = data.filter(app => app.patientEmail === doctorEmail);
+        setAppointments(filteredAppointments);
+        setEarnings(filteredAppointments.reduce((total, app) => total + app.fee, 0));
+      }
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [session]);
+
   useEffect(() => {
     if (status === 'authenticated') {
       fetchAppointments();
     } else if (status === 'unauthenticated') {
       setShowLoginModal(true);
     }
-  }, [status]);
-
-  const fetchAppointments = async () => {
-    const res = await fetch('/api/appointment');
-    const data = await res.json();
-    const doctorEmail = session?.user?.email;
-
-    if (doctorEmail) {
-      const filteredAppointments = data.filter(app => app.patientEmail === doctorEmail);
-      setAppointments(filteredAppointments);
-      setEarnings(filteredAppointments.reduce((total, app) => total + app.fee, 0));
-    }
-  };
+  }, [status, fetchAppointments]);
 
   const handleTabChange = (tab) => {
     setLoading(true);
