@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState } from "react";
 import { CircularProgress, Button } from '@mui/material';
 import { IoLocation } from "react-icons/io5";
 import Image from 'next/image';
@@ -10,26 +10,20 @@ import { FaPhone } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
-const Contact: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+const Contact = () => {
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -62,7 +56,6 @@ const Contact: React.FC = () => {
         Get In Touch
       </h1>
 
-      {/* First div with image and contact details */}
       <div className="flex flex-col md:flex-row justify-between px-8 gap-8 mb-10">
         <div className="flex flex-1 flex-col items-center md:items-start">
           <Image
@@ -96,20 +89,17 @@ const Contact: React.FC = () => {
         </div>
       </div>
 
-      {/* Flex layout for description and contact form */}
       <div className="flex flex-col md:flex-row px-8 gap-4">
-        {/* Description */}
         <div className="flex flex-col flex-1 mb-6 md:mb-0">
           <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Contact Form</h2>
           <p className="text-md text-slate-500 font-semibold mb-4">
             At Prescripto, we understand that navigating healthcare can sometimes be overwhelming. Our mission is to provide you with the highest level of support and assistance, ensuring you feel confident and cared for throughout your journey with us.
           </p>
           <p className="text-md text-slate-500 font-semibold mb-4">
-          Whether you have inquiries about our services, need assistance with appointments, or seek professional advice, we are here to help!
+            Whether you have inquiries about our services, need assistance with appointments, or seek professional advice, we are here to help!
           </p>
         </div>
 
-        {/* Contact Form */}
         <div className="flex flex-col flex-1">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex flex-col mt-3 w-full max-w-md mx-auto">
@@ -120,7 +110,7 @@ const Contact: React.FC = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="bg-slate-200 p-3 border focus:outline-green-700  text-sm rounded-md"
+                className="bg-slate-200 p-3 border focus:outline-green-700 text-sm rounded-md"
                 placeholder="Your Name"
                 required
               />
@@ -133,7 +123,7 @@ const Contact: React.FC = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="bg-slate-200 p-3 text-sm  border focus:outline-green-700 rounded-md"
+                className="bg-slate-200 p-3 text-sm border focus:outline-green-700 rounded-md"
                 placeholder="Your Email"
                 required
               />
@@ -145,7 +135,7 @@ const Contact: React.FC = () => {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                className="bg-slate-200 resize-none text-sm border focus:outline-green-700  rounded-md p-3"
+                className="bg-slate-200 resize-none text-sm border focus:outline-green-700 rounded-md p-3"
                 placeholder="Enter your message here"
                 rows={4}
                 required
