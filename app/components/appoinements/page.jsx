@@ -1,35 +1,24 @@
-// components/AppointmentList.tsx
-
 "use client";
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 
-interface Appointment {
-  id: string; // Updated to string to match API response
-  patientName: string;
-  doctorEmail: string;
-  date: string;
-  time: string;
-  fee: number;
-}
-
-const formatDate = (dateString: string) => {
+const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+  const options = { day: 'numeric', month: 'long', year: 'numeric' };
   return date.toLocaleDateString('en-US', options);
 };
 
-const AppointmentList: React.FC = () => {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+const AppointmentList = () => {
+  const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get<Appointment[]>('http://localhost:3000/api/appointment');
+        const response = await axios.get('http://localhost:3000/api/appointment');
         setAppointments(response.data);
       } catch (err) {
         setError('Failed to fetch appointments');
@@ -55,9 +44,9 @@ const AppointmentList: React.FC = () => {
 
   return (
     <div>
-<h2 className="text-2xl my-14 font-semibold mb-4 text-center bg-gradient-to-r from-orange-500 via-indigo-500 to-purple-500 text-transparent bg-clip-text">
-  Appointments
-</h2>
+      <h2 className="text-2xl my-14 font-semibold mb-4 text-center bg-gradient-to-r from-orange-500 via-indigo-500 to-purple-500 text-transparent bg-clip-text">
+        Appointments
+      </h2>
       <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
