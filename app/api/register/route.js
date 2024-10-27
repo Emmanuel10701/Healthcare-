@@ -3,7 +3,7 @@ import prisma from '../../../libs/prisma';
 import { NextResponse } from 'next/server';
 
 // POST request: Register a new user
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const body = await request.json();
     const { name, email, password } = body;
