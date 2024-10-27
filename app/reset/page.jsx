@@ -1,4 +1,5 @@
-'use client';
+"use client"; // This component must be a client component
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
@@ -16,7 +17,7 @@ const passwordSchema = z.object({
   path: ["confirmPassword"],
 });
 
-const ResetPasswordPage: React.FC = () => {
+const ResetPasswordPage = () => {
   const router = useRouter();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,7 +25,7 @@ const ResetPasswordPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const token = new URLSearchParams(window.location.search).get('token');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -66,7 +67,7 @@ const ResetPasswordPage: React.FC = () => {
         <div className="container mx-auto flex items-center px-4 md:px-8">
           <div className="w-44 cursor-pointer flex items-center">
             <Image src="/assets/assets_frontend/logo.svg" alt="Logo" width={176} height={50} />
-            <span className="ml-3 bg-white rounded-full text-blue-600 px-6 py-2 shadow-md">Reset </span>
+            <span className="ml-3 bg-white rounded-full text-blue-600 px-6 py-2 shadow-md">Reset</span>
           </div>
         </div>
       </div>
