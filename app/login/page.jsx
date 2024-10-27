@@ -9,7 +9,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
     }
   }, [session, router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -41,14 +41,14 @@ const LoginPage: React.FC = () => {
         toast.success("Login successful!");
         router.push("/admin"); // Redirect to admin page after successful login
       }
-    } catch (error: any) {
+    } catch (error) {
       toast.error(error.message || "An error occurred during login");
     } finally {
       setLoading(false);
     }
   };
 
-  const getErrorMessage = (error: string) => {
+  const getErrorMessage = (error) => {
     if (error.includes("No user found")) {
       return "User does not exist. Please check your email.";
     }
