@@ -20,7 +20,7 @@ const AppointmentDetail = () => {
       const doctorName = session.user.name; // Extract doctor name from session
 
       try {
-        const response = await fetch(`/api/appointments?doctorName=${doctorName}`);
+        const response = await fetch(`/api/appointment?doctorName=${doctorName}`);
         const data = await response.json();
 
         const userAppointments = data.filter((appt) => 

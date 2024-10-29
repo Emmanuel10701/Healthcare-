@@ -24,16 +24,14 @@ const Dashboard = () => {
   const fetchAppointments = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/appointment');
-      if (!res.ok) throw new Error('Failed to fetch appointments');
-      const data = await res.json();
       const doctorEmail = session?.user?.email;
-
-      if (doctorEmail) {
-        const filteredAppointments = data.filter(app => app.patientEmail === doctorEmail);
-        setAppointments(filteredAppointments);
-        setEarnings(filteredAppointments.reduce((total, app) => total + app.fee, 0));
-      }
+      const res = await fetch(`/api/appointments/email?email=${doctorEmail}`);
+      
+      if (!res.ok) throw new Error('Failed to fetch appointments');
+      
+      const data = await res.json();
+      setAppointments(data);
+      setEarnings(data.reduce((total, app) => total + app.fee, 0));
     } catch (error) {
       console.error('Error fetching appointments:', error);
     } finally {
@@ -172,39 +170,45 @@ const Dashboard = () => {
                   <h2 className="text-3xl font-bold my-6 text-gray-800 shadow-lg shadow-gray-300">
                     Appointments
                   </h2>
-                  <table className="min-w-full bg-white border border-gray-300 shadow-lg">
-                    <thead>
-                      <tr className="bg-gray-100 text-purple-700 font-semibold shadow-md shadow-gray-200">
-                        <th className="py-3 px-4 border-b">Doctor</th>
-                        <th className="py-3 px-4 border-b">Appointment Date</th>
-                        <th className="py-3 px-4 border-b">Status</th>
-                        <th className="py-3 px-4 border-b">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {appointments.map((appointment, index) => (
-                        <tr key={appointment.id} className={index % 2 === 0 ? 'bg-purple-50' : 'bg-green-50'}>
-                          <td className="py-3 px-4 border-b text-gray-700 font-medium">{appointment.doctor}</td>
-                          <td className="py-3 px-4 border-b text-gray-700 font-medium">{appointment.date}</td>
-                          <td className={`py-3 px-4 border-b font-semibold ${appointment.status === 'Confirmed' ? 'text-green-600' : 'text-red-600'}`}>
-                            {appointment.status}
-                          </td>
-                          <td className="py-3 px-4 border-b flex justify-around">
-                            {appointment.status === 'Confirmed' && (
-                              <button onClick={() => completeAppointment(appointment.fee)} className="text-sm text-green-600 font-bold hover:underline">
-                                Complete
-                              </button>
-                            )}
-                            {appointment.status === 'Pending' && (
-                              <button onClick={() => handleCancelAppointment(appointment.id)} className="text-sm text-red-600 font-bold hover:underline">
-                                Cancel
-                              </button>
-                            )}
-                          </td>
+                  {appointments.length === 0 ? (
+                    <h2 className="text-2xl text-center font-bold text-gradient bg-gradient-to-r from-indigo-500 to-purple-600">
+                      You have no appointments
+                    </h2>
+                  ) : (
+                    <table className="min-w-full bg-white border border-gray-300 shadow-lg">
+                      <thead>
+                        <tr className="bg-gray-100 text-purple-700 font-semibold shadow-md shadow-gray-200">
+                          <th className="py-3 px-4 border-b">Doctor</th>
+                          <th className="py-3 px-4 border-b">Appointment Date</th>
+                          <th className="py-3 px-4 border-b">Status</th>
+                          <th className="py-3 px-4 border-b">Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {appointments.map((appointment, index) => (
+                          <tr key={appointment.id} className={index % 2 === 0 ? 'bg-purple-50' : 'bg-green-50'}>
+                            <td className="py-3 px-4 border-b text-gray-700 font-medium">{appointment.doctor}</td>
+                            <td className="py-3 px-4 border-b text-gray-700 font-medium">{appointment.date}</td>
+                            <td className={`py-3 px-4 border-b font-semibold ${appointment.status === 'Confirmed' ? 'text-green-600' : 'text-red-600'}`}>
+                              {appointment.status}
+                            </td>
+                            <td className="py-3 px-4 border-b flex justify-around">
+                              {appointment.status === 'Confirmed' && (
+                                <button onClick={() => completeAppointment(appointment.fee)} className="text-sm text-green-600 font-bold hover:underline">
+                                  Complete
+                                </button>
+                              )}
+                              {appointment.status === 'Pending' && (
+                                <button onClick={() => handleCancelAppointment(appointment.id)} className="text-sm text-red-600 font-bold hover:underline">
+                                  Cancel
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                 </>
               )}
 

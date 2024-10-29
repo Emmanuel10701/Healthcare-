@@ -23,14 +23,12 @@ const AppointmentDetail = () => {
 
   useEffect(() => {
     if (id) {
-      // Find the doctor by ID in the static doctorsData array
       const foundDoctor = doctorsData.find(doctor => doctor.id === parseInt(id));
       setDoctor(foundDoctor);
       setLoading(false);
     }
   }, [id]);
 
-  const appointmentFee = 50;
   const times = ['6:00 AM', '8:00 AM', '10:00 AM', '1:00 PM', '3:00 PM', '5:00 PM'];
 
   const handleBookAppointment = () => {
@@ -48,10 +46,10 @@ const AppointmentDetail = () => {
 
   const confirmAppointment = async () => {
     if (!session?.user || !doctor) return;
-
+  
     setAppointmentConfirmed(true);
     setModalOpen(false);
-
+  
     try {
       const response = await fetch('/api/appointment', {
         method: 'POST',
@@ -60,24 +58,24 @@ const AppointmentDetail = () => {
         },
         body: JSON.stringify({
           patientName: session.user.name,
-          doctorName: doctor.name,  // Correctly retrieve doctor name here
+          doctorEmail: doctor.doctorEmail,  
           date: selectedDate?.toISOString(),
           time: selectedTime,
-          fee: appointmentFee,
+          fee: doctor.fee,  // Use doctor's fee
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to book appointment');
       }
-
+  
       console.log('Appointment booked successfully');
     } catch (error) {
       console.error('Error booking appointment:', error);
       alert('Failed to book appointment.');
     }
   };
-
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalOpen && modalRef.current && !modalRef.current.contains(event.target)) {
@@ -134,7 +132,7 @@ const AppointmentDetail = () => {
             </p>
             <h3 className='text-center my-2 text-orange-600 text-lg font-bold'>About 🤵</h3>
             <p className="text-sm text-slate-500 mb-4">{doctor.description}</p>
-            <h3 className='text-start my-2 text-indigo-600 text-lg font-bold'>Appointment fee <span className='font-extrabold text-green-700'>${appointmentFee}</span></h3>
+            <h3 className='text-start my-2 text-indigo-600 text-lg font-bold'>Appointment fee <span className='font-extrabold text-green-700'>${doctor.fee}</span></h3>
           </div>
 
           <h3 className="text-lg font-semibold mb-2 mt-4">Select Date:</h3>
@@ -191,7 +189,7 @@ const AppointmentDetail = () => {
                 <p className="mt-4 text-lg">Doctor: <span className="font-semibold text-blue-600">{doctor.name}</span></p>
                 <p className="mt-2 text-lg">Date: <span className="font-semibold text-blue-600">{selectedDate?.toLocaleDateString()}</span></p>
                 <p className="mt-2 text-lg">Time: <span className="font-semibold text-blue-600">{selectedTime}</span></p>
-                <p className="mt-2 text-lg">Appointment Fee: <span className='font-extrabold text-green-700'>${appointmentFee}</span></p>
+                <p className="mt-2 text-lg">Appointment Fee: <span className='font-extrabold text-green-700'>${doctor.fee}</span></p>
                 <div className="flex justify-between mt-6">
                   <button onClick={confirmAppointment} className="bg-green-500 text-white py-3 px-6 rounded-full shadow hover:bg-green-600 transition duration-200">
                     Confirm
