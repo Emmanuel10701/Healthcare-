@@ -8,6 +8,7 @@ export const doctorsData = [
     degree: 'DDS (Doctor of Dental Surgery)',
     description: 'Dr. Smith has over 10 years of experience in providing dental care and is committed to ensuring the best outcomes for his patients.',
     image: '/assets/assets_frontend/doc1.png',
+    doctorEmail: 'dr.smith@example.com',
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const doctorsData = [
     degree: 'DMD (Doctor of Medicine in Dentistry)',
     description: 'Dr. Johnson focuses on restorative dentistry and has a passion for patient care.',
     image: '/assets/assets_frontend/doc2.png',
+    doctorEmail: 'dr.johnson@example.com',
   },
   {
     id: 3,
@@ -24,6 +26,7 @@ export const doctorsData = [
     degree: 'BDS (Bachelor of Dental Surgery)',
     description: 'Dr. Lee is known for her expertise in pediatric dentistry and making kids feel comfortable during their visits.',
     image: '/assets/assets_frontend/doc3.png',
+    doctorEmail: 'dr.lee@example.com',
   },
   {
     id: 4,
@@ -32,6 +35,7 @@ export const doctorsData = [
     degree: 'MS (Master of Science) in Orthodontics',
     description: 'Dr. Brown specializes in braces and aligners, helping patients achieve their dream smiles.',
     image: '/assets/assets_frontend/doc4.png',
+    doctorEmail: 'dr.brown@example.com',
   },
   {
     id: 5,
@@ -40,6 +44,7 @@ export const doctorsData = [
     degree: 'DDS (Doctor of Dental Surgery)',
     description: 'Dr. Garcia performs various surgical procedures, including wisdom tooth extractions and dental implants.',
     image: '/assets/assets_frontend/doc5.png',
+    doctorEmail: 'dr.garcia@example.com',
   },
   {
     id: 6,
@@ -48,6 +53,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Wilson has extensive experience in family medicine and preventive care.',
     image: '/assets/assets_frontend/doc6.png',
+    doctorEmail: 'dr.wilson@example.com',
   },
   {
     id: 7,
@@ -56,6 +62,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Martinez specializes in treating skin conditions and cosmetic procedures.',
     image: '/assets/assets_frontend/doc7.png',
+    doctorEmail: 'dr.martinez@example.com',
   },
   {
     id: 8,
@@ -64,6 +71,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Taylor is dedicated to the health and well-being of children from infancy through adolescence.',
     image: '/assets/assets_frontend/doc8.png',
+    doctorEmail: 'dr.taylor@example.com',
   },
   {
     id: 9,
@@ -72,6 +80,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Anderson specializes in digestive system disorders and offers advanced treatment options.',
     image: '/assets/assets_frontend/doc9.png',
+    doctorEmail: 'dr.anderson@example.com',
   },
   {
     id: 10,
@@ -80,6 +89,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Thomas focuses on treating neurological conditions and improving patients’ quality of life.',
     image: '/assets/assets_frontend/doc10.png',
+    doctorEmail: 'dr.thomas@example.com',
   },
   {
     id: 11,
@@ -88,6 +98,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Moore is committed to women’s health and provides comprehensive gynecological care.',
     image: '/assets/assets_frontend/doc11.png',
+    doctorEmail: 'dr.moore@example.com',
   },
   {
     id: 12,
@@ -96,6 +107,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Harris specializes in heart health and offers preventive care and advanced treatments.',
     image: '/assets/assets_frontend/doc12.png',
+    doctorEmail: 'dr.harris@example.com',
   },
   {
     id: 13,
@@ -104,6 +116,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Clark focuses on hormone-related disorders and metabolic conditions.',
     image: '/assets/assets_frontend/doc13.png',
+    doctorEmail: 'dr.clark@example.com',
   },
   {
     id: 14,
@@ -112,6 +125,7 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Lewis specializes in musculoskeletal disorders and joint replacements.',
     image: '/assets/assets_frontend/doc14.png',
+    doctorEmail: 'dr.lewis@example.com',
   },
   {
     id: 15,
@@ -120,5 +134,6 @@ export const doctorsData = [
     degree: 'MD (Doctor of Medicine)',
     description: 'Dr. Robinson is dedicated to mental health and provides compassionate care for psychological disorders.',
     image: '/assets/assets_frontend/doc15.png',
+    doctorEmail: 'dr.robinson@example.com',
   },
 ];
