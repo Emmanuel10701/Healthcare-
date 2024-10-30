@@ -11,6 +11,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Static URL for email link
+const url = "https://healthcare-project-sepia.vercel.app";
+
 export async function POST(req) {
   const { email } = await req.json();
 
@@ -21,7 +24,7 @@ export async function POST(req) {
     }
 
     const token = uuidv4(); // Generate a unique token
-    const resetLink = `${process.env.NEXT_PUBLIC_URL}/reset?token=${token}`;
+    const resetLink = `${url}/reset?token=${token}`; // Use the static URL
 
     // Set expiration to 1 hour from now
     const expires = new Date(Date.now() + 3600000); // 1 hour in milliseconds
