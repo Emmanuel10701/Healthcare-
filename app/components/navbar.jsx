@@ -77,7 +77,7 @@ const Navbar = () => {
               <button 
                 onClick={toggleDropdown} 
                 className="flex items-center bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition duration-300">
-                <Image src={session.user?.image || '/assets/assets_frontend/profile_pic.png'} alt="User Avatar" width={30} height={30} className="rounded-full mr-2" />
+                <Image src={session.user?.image || '/images/default.png'} alt="User Avatar" width={30} height={30} className="rounded-full mr-2" />
                 {session.user?.name}
               </button>
               {dropdownOpen && (
