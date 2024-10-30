@@ -94,7 +94,7 @@ const Dashboard = () => {
 
 
   const closeLoginModal = () => {
-    setShowLoginModal(false);
+    router.back();
   };
 
   const doctors = [

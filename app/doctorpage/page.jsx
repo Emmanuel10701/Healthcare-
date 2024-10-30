@@ -102,7 +102,7 @@ const Dashboard = () => {
   };
 
   const closeLoginModal = () => {
-    setShowLoginModal(false);
+     router.back();
   };
 
   return (
@@ -171,9 +171,10 @@ const Dashboard = () => {
                     Appointments
                   </h2>
                   {appointments.length === 0 ? (
-                    <h2 className="text-2xl text-center font-bold text-gradient bg-gradient-to-r from-indigo-500 to-purple-600">
-                      You have no appointments
-                    </h2>
+                   <h2 className="text-2xl text-center font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600">
+                   You have no appointments
+                 </h2>
+                 
                   ) : (
                     <table className="min-w-full bg-white border border-gray-300 shadow-lg">
                       <thead>
