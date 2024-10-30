@@ -61,7 +61,7 @@ const Dashboard = () => {
 
   const fetchSubscribers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/subs');
+      const response = await axios.get('/api/subs');
       setSubscribers(response.data);
     } catch (err) {
       setError('Failed to fetch subscribers');
@@ -74,7 +74,7 @@ const Dashboard = () => {
 
   const handleSendEmail = async (subject, message) => {
     try {
-      await axios.post('http://localhost:3000/api/mailing', { 
+      await axios.post('/api/mailing', { 
         subject, 
         message, 
         subscribers 

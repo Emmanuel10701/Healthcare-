@@ -1,4 +1,4 @@
-GET  http://localhost:3000/api/appointment/BobJohnson
+GET  http://localhost:3000/api/subs
 Content-Type: application/json
 
 {
