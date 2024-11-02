@@ -72,8 +72,7 @@ const DoctorsPage = () => {
           {filteredDoctors.map(doctor => (
             <div 
               key={doctor.id} 
-              className="border hover:bg-blue-400 cursor-pointer rounded-lg overflow-hidden shadow-md transition duration-200 hover:outline-1 hover:shadow-lg"
-              onClick={() => handleDoctorClick(doctor.id)}
+              className="border rounded-lg overflow-hidden shadow-md transition duration-200"
             >
               <Image
                 src={doctor.image}
@@ -90,6 +89,12 @@ const DoctorsPage = () => {
                 <p className={`mt-2 text-sm font-bold ${doctor.available ? 'text-green-400' : 'text-red-400'}`}>
                   {doctor.available ? 'Available' : 'Not Available'}
                 </p>
+                <button 
+                  onClick={() => handleDoctorClick(doctor.id)} 
+                  className="mt-2 bg-blue-500 text-white py-1 px-2 rounded"
+                >
+                  View Doctor
+                </button>
               </div>
             </div>
           ))}
