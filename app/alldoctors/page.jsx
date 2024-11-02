@@ -45,9 +45,9 @@ const DoctorsPage = () => {
     : doctorsData.filter(doctor => doctor.specialty === selectedSpecialty);
 
   return (
-    <div className="flex p-8 mt-20">
+    <div className="flex flex-col md:flex-row p-8 mt-20">
       {/* Sidebar */}
-      <div className="w-1/4">
+      <div className="flex-1 md:w-1/4">
         <h2 className="text-2xl font-bold mb-4">Filter by Specialty</h2>
         <div className="flex flex-col space-y-2">
           {specialties.map((specialty, index) => (
@@ -63,7 +63,7 @@ const DoctorsPage = () => {
       </div>
 
       {/* Doctors List */}
-      <div className="w-3/4 ml-4">
+      <div className="flex-1 md:w-3/4 ml-4">
         <h1 className="text-3xl font-bold mb-4">Doctors</h1>
         <p className='text-center text-slate-700 my-6 text-xl'>Browse through the doctors specialist.</p>
         
