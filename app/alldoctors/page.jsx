@@ -91,9 +91,9 @@ const DoctorsPage = () => {
                 </p>
                 <button 
                   onClick={() => handleDoctorClick(doctor.id)} 
-                  className="mt-2 bg-blue-500 text-white py-1 px-2 rounded"
+                  className="mt-2 text-blue-500 hover:text-underline hover:text-blue-600"
                 >
-                  View Doctor
+                  View 
                 </button>
               </div>
             </div>
