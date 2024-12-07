@@ -1,4 +1,5 @@
 "use client";
+import { FcGoogle } from "react-icons/fc";
 import React, { useState, useEffect } from "react";
 import Image from "next/image"; // Import Image from Next.js
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
@@ -131,6 +132,23 @@ const LoginPage = () => {
                   "Sign In"
                 )}
               </button>
+              <button
+          onClick={() => signIn("google")}
+          className="flex items-center justify-center w-full py-3 bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-100 transition"
+        >
+          <FcGoogle className="text-2xl mr-3" />
+          <span className="text-gray-700 font-medium">Sign in with Google</span>
+        </button>
+        <p className="text-center text-sm text-gray-500 mt-6">
+          By signing in, you agree to our{" "}
+          <a href="#" className="text-blue-500 hover:underline">
+            Terms of Service
+          </a>{" "}
+          and{" "}
+          <a href="#" className="text-blue-500 hover:underline">
+            Privacy Policy
+          </a>.
+        </p>
 
               <div className="text-center mt-4">
                 Don&apos;t have an account?
