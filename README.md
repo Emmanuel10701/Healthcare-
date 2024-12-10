@@ -1,5 +1,6 @@
-# Doctors Appointment Platform 🩺  
-[Live Demo](https://healthcare-project-sepia.vercel.app/)  
+# **Doctors Appointment Platform 🩺**  
+[**Live Demo**](https://healthcare-project-sepia.vercel.app/)
+ 
 
 ## Overview  
 
