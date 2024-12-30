@@ -1,17 +1,17 @@
 "use client";
-import { FcGoogle } from "react-icons/fc";
+
 import React, { useState, useEffect } from "react";
-import Image from "next/image"; // Import Image from Next.js
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import Link from "next/link";
-import { CircularProgress } from "@mui/material";
-import { toast, ToastContainer } from "react-toastify";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { CircularProgress } from "@mui/material";
+import Link from "next/link";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -19,10 +19,10 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (session) {
+    if (status === "authenticated") {
       router.push("/admin"); // Redirect to admin page after login
     }
-  }, [session, router]);
+  }, [status, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,7 +64,6 @@ const LoginPage = () => {
       <div className="fixed top-0 left-0 mb-10 w-full bg-white border-b border-blue-300 bg-transparent py-4 z-50 flex items-center justify-between">
         <div className="container mx-auto flex items-center px-4 md:px-8">
           <div className="w-44 cursor-pointer flex items-center">
-            <Image src="/assets/assets_frontend/logo.svg" alt="Logo" width={176} height={50} />
             <span className="ml-3 bg-white rounded-full text-blue-600 px-4 py-1 shadow-md">Login</span>
           </div>
         </div>
@@ -72,11 +71,7 @@ const LoginPage = () => {
       <div className="flex flex-col mt-10 min-h-screen bg-gray-100 p-4">
         <div className="flex flex-col items-center justify-center flex-1">
           <div className="w-full max-w-xl p-12 bg-white shadow-lg rounded-lg mb-8">
-            {/* Logo and Welcome Section */}
             <div className="flex flex-col items-center mb-6">
-              <div className="w-44 cursor-pointer flex items-center">
-                <Image src="/assets/assets_frontend/logo.svg" alt="Logo" width={176} height={50} />
-              </div>
               <h2 className="text-2xl font-bold text-center mt-4">Welcome to the Appointment System</h2>
               <p className="text-center text-gray-600 mt-2">Please log in to manage your appointments.</p>
             </div>
@@ -88,7 +83,7 @@ const LoginPage = () => {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-4 border border-gray-300 rounded-lg pl-12 focus:outline-none focus:ring-2 focus:ring-stlete-500 text-lg" // Increased font size
+                  className="w-full p-4 border border-gray-300 rounded-lg pl-12 focus:outline-none focus:ring-2 focus:ring-stlete-500 text-lg"
                   placeholder="Email Address"
                   required
                 />
@@ -100,7 +95,7 @@ const LoginPage = () => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-4 border border-gray-300 rounded-lg pl-12 focus:outline-none focus:ring-2 focus:ring-stlete-500 text-lg" // Increased font size
+                  className="w-full p-4 border border-gray-300 rounded-lg pl-12 focus:outline-none focus:ring-2 focus:ring-stlete-500 text-lg"
                   placeholder="Password"
                   required
                 />
@@ -133,22 +128,22 @@ const LoginPage = () => {
                 )}
               </button>
               <button
-          onClick={() => signIn("google")}
-          className="flex mt-4 items-center justify-center w-full py-3 bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-100 transition"
-        >
-          <FcGoogle className="text-2xl mr-3" />
-          <span className="text-gray-700 font-medium">Sign in with Google</span>
-        </button>
-        <p className="text-center text-sm text-gray-500 mt-6">
-          By signing in, you agree to our{" "}
-          <a href="#" className="text-blue-500 hover:underline">
-            Terms of Service
-          </a>{" "}
-          and{" "}
-          <a href="#" className="text-blue-500 hover:underline">
-            Privacy Policy
-          </a>.
-        </p>
+                onClick={() => signIn("google")}
+                className="flex mt-4 items-center justify-center w-full py-3 bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-100 transition"
+              >
+                <FcGoogle className="text-2xl mr-3" />
+                <span className="text-gray-700 font-medium">Sign in with Google</span>
+              </button>
+              <p className="text-center text-sm text-gray-500 mt-6">
+                By signing in, you agree to our{" "}
+                <a href="#" className="text-blue-500 hover:underline">
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-blue-500 hover:underline">
+                  Privacy Policy
+                </a>.
+              </p>
 
               <div className="text-center mt-4">
                 Don&apos;t have an account?
