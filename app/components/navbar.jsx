@@ -115,12 +115,17 @@ const Navbar = () => {
             <li>
               {!session ? (
                 <>
-                  <button onClick={() => router.push('/register')} className="bg-transparent border border-blue-600 text-blue-600 px-5 py-2 rounded-full hover:bg-blue-600 hover:text-white transition duration-300">
-                    Sign Up
-                  </button>
-                  <button onClick={() => router.push('/login')} className="bg-transparent border border-blue-600 text-blue-600 px-5 py-2 rounded-full hover:bg-blue-600 hover:text-white transition duration-300">
-                    Sign In
-                  </button>
+                 <button 
+  onClick={() => router.push('/register')} 
+  className="bg-transparent border border-blue-600 text-blue-600 px-5 py-2 rounded-md hover:bg-blue-600 hover:text-white transition duration-300">
+  Sign Up
+</button>
+<button 
+  onClick={() => router.push('/login')} 
+  className="bg-transparent border border-blue-600 text-blue-600 px-5 py-2 rounded-md hover:bg-blue-600 hover:text-white transition duration-300">
+  Sign In
+</button>
+
                 </>
               ) : (
                 <button onClick={toggleDropdown} className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition duration-300">
