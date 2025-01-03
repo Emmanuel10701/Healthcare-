@@ -70,5 +70,5 @@ The **Doctors Appointment System** is a comprehensive platform where patients ca
 ### Backend Setup (Django)  
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/Emmanuel10701/Doctor_Appointment-_Syatem
-   cd doctors-appointment-system/backend
+   git clone https://github.com/Emmanuel10701/Heathcare.git
+   cd Heathcare
